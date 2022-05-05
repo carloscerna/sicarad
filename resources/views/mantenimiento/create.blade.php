@@ -1,13 +1,23 @@
 @extends('adminlte::page')
 
-@section('title', 'Sistema - Tablero')
+@section('title', 'Sistema - Nuevo')
 
 @section('content_header')
-    <h1>CREAR NUEVO ARCHIVO</h1>
+    <h1>Nuevo</h1>
 @stop
 
 @section('content')
-    <p>Bienvenido</p>
+    <div class="card">
+        <div class="card-body">
+            {!! Form::open(['route'=>'mantenimiento.asignatura.store']) !!}
+                <div class="form-group">
+                    {!! Form::label($for, $text, [$options]) !!}
+                    {!! Form::text($name, $value, [$options]) !!}
+                </div>
+            {!! Form::close()} !!}
+        </div>
+    </div>
+
 @stop
 
 @section('css')

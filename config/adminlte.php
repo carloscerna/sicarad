@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'SISTEMA',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>CE</b>10391',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'Institución',
 
     /*
     |--------------------------------------------------------------------------
@@ -247,16 +247,16 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
+            'text'        => 'Tablero',
+            'url'         => '/dash',
             'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'label'       => 'info',
+            'label_color' => 'info',
         ],
-        ['header' => 'account_settings'],
+        ['header' => 'Mantenimiento Catalógos'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
+            'text' => 'Asignatura',
+            'route' => 'mantenimiento.asignatura.index',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -302,7 +302,7 @@ return [
                 ],
             ],
         ],
-        ['header' => 'labels'],
+        ['header' => 'Etiquetas'],
         [
             'text'       => 'important',
             'icon_color' => 'red',

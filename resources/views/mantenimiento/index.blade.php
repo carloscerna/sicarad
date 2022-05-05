@@ -7,7 +7,9 @@
 @stop
 
 @section('content')
-    <div class="card">
+<div class="card-header">
+    <a href="{{route('mantenimiento.asignatura.create')}}" class="btn btn-primary">Nuevo</a>
+</div>
         <div class="card body">
             <table class="table table-striped">
                 <thead>
@@ -28,8 +30,14 @@
                             <td>{{$item->codigo}}</td>
                             <td>{{$item->codigo_cc}}</td>
                             <td>{{$item->codigo_area}}</td>
-                            <td><a href="{{route('mantenimiento.asignatura.edit',$item)}}" class="btn btn-primary">Editar</a></td>
-                            <td><a href="{{route('mantenimiento.asignatura.destroy',$item)}}" class="btn btn-danger">Eliminar</a></td>
+                            <td><a href="{{route('mantenimiento.asignatura.edit',$item)}}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td>
+                                <form action="{{route('mantenimiento.asignatura.destroy', $item)}}" method="POST" class="">
+                                @method('delete')
+                                @csrf
+                                <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">
+                            </form>
+                            </td>
                         </tr>
                     @endforeach
                 </body>
