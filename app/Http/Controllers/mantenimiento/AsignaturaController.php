@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\mantenimiento;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\mantenimiento\AsignaturaController as MantenimientoAsignaturaController;
 use App\Models\Mantenimiento\Asignatura;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,8 @@ class AsignaturaController extends Controller
     public function store(Request $request)
     {
         // para guardar en la base de datos el nuevo registro
+        $asignatura = Asignatura::create($request->all());
+        //return $request->all();
     }
 
     /**
