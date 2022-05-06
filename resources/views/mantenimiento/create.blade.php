@@ -11,10 +11,16 @@
         <div class="card-body">
             {!! Form::open(['route'=>'mantenimiento.asignatura.store']) !!}
                 <div class="form-group">
-                    {!! Form::label($for, $text, [$options]) !!}
-                    {!! Form::text($name, $value, [$options]) !!}
+                    {!! Form::label('nombre', 'Nombre') !!}
+                    {!! Form::text('nombre', null, ['class'=>'form-control']) !!}
                 </div>
-            {!! Form::close()} !!}
+                <div class="form-group">
+                    {!! Form::label('codigo', 'Código') !!}
+                    {!! Form::text('codigo', null, ['class'=>'form-control']) !!}
+                </div>
+
+                {!! Form::submit('Guardar', ['class'=>'btn btn-primary']) !!}
+            {!! Form::close() !!}
         </div>
     </div>
 
