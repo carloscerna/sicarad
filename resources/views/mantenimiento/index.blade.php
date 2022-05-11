@@ -28,11 +28,11 @@
                             <td>{{$item->id_asignatura}}</td>
                             <td>{{$item->nombre}}</td>
                             <td>{{$item->codigo}}</td>
-                            <td>{{$item->codigo_cc}}</td>
-                            <td>{{$item->codigo_area}}</td>
-                            <td><a href="{{route('mantenimiento.asignatura.edit',$item)}}" class="btn btn-primary btn-sm">Editar</a></td>
-                            <td>
-                                <form action="{{route('mantenimiento.asignatura.destroy', $item)}}" method="POST" class="">
+                            <td>{{$item->nombre_cc}}</td>
+                            <td>{{$item->nombre_area}}</td>
+                             <td><a href="{{route('mantenimiento.asignatura.edit',$item->id_asignatura)}}" class="btn btn-primary btn-sm">Editar</a></td>
+                                <td>
+                                <form action="{{route('mantenimiento.asignatura.destroy', $item->id_asignatura)}}" method="POST" class="">
                                 @method('delete')
                                 @csrf
                                 <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">

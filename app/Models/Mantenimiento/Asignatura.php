@@ -9,5 +9,6 @@ class Asignatura extends Model
 {
     use HasFactory;
     protected $table = "asignatura";
-    protected $fillable = ['nombre','codigo'];
+    protected $fillable = ['nombre','codigo']; // es para definir que registros van hacer guardados, o sea solo los campos que esten en el listado.
+    
 }

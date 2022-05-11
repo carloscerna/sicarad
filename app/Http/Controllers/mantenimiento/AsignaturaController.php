@@ -4,10 +4,10 @@ namespace App\Http\Controllers\mantenimiento;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\mantenimiento\AsignaturaController as MantenimientoAsignaturaController;
+use App\Models\Catalogo_area_asignatura;
+use App\Models\Catalogo_cc_asignatura;
 use App\Models\Mantenimiento\Asignatura;
 use Illuminate\Http\Request;
-
-
 class AsignaturaController extends Controller
 {
     /**
@@ -18,8 +18,16 @@ class AsignaturaController extends Controller
     public function index()
     {
         //lee todos los registros
-        $Asignatura = Asignatura::all();
-        return view('mantenimiento.index')->with('Asignatura',$Asignatura);;
+        //$Asignatura = Asignatura::all();
+
+        $Asignatura = asignatura::join('catalogo_cc_asignatura', 'asignatura.codigo_cc', '=', 'catalogo_cc_asignatura.codigo')
+        ->join('catalogo_area_asignatura', 'asignatura.codigo_area', '=', 'catalogo_area_asignatura.codigo')
+        ->select('asignatura.id_asignatura','asignatura.nombre', 'asignatura.codigo', 'catalogo_cc_asignatura.descripcion as nombre_cc', 'catalogo_area_asignatura.descripcion as nombre_area')
+        ->get();
+
+        //return $Asignatura;
+        return view('mantenimiento.index', compact('Asignatura'));
+        //return view('mantenimiento.index')->with('Asignatura',$Asignatura);
     }
 
     /**
