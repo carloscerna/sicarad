@@ -38,7 +38,10 @@ class AsignaturaController extends Controller
     public function create()
     {
         // Abrir formulario para un nuevo registro
-        return view('mantenimiento.create');
+        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
+
+        return view('mantenimiento.create', compact('catalogo_cc_asignatura','catalogo_area_asignatura'));
     }
 
     /**
@@ -51,6 +54,8 @@ class AsignaturaController extends Controller
     {
         // para guardar en la base de datos el nuevo registro
         $asignatura = Asignatura::create($request->all());
+        return $asignatura;
+        //return redirect()->route('mantenimiento.asignatura.edit',$asignatura);
         //return $request->all();
     }
 
@@ -75,7 +80,9 @@ class AsignaturaController extends Controller
     public function edit(Asignatura $asignatura)
     {
         // para abrir un formulario para edición de un registro
-        return view('mantenimiento.edit');
+
+        return $asignatura;
+        //return view('mantenimiento.edit');
     }
 
     /**

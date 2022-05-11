@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <p></p>
+    <p>$asignatura</p>
 @stop
 
 @section('css')

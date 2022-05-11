@@ -19,6 +19,14 @@
                     {!! Form::text('codigo', null, ['class'=>'form-control']) !!}
                 </div>
 
+                <div class="form-group">
+                    {{ Form::label('LblCodigoCC', 'Calificación o Concepto') }}
+                    {!! Form::select('CodigoCC', $catalogo_cc_asignatura, null, ['class' => 'form-control']) !!}
+
+                    {{ Form::label('LblCodigoArea', 'Código Área') }}
+                    {!! Form::select('CodigoArea', $catalogo_area_asignatura, null, ['class' => 'form-control']) !!}
+                </div>
+
                 {!! Form::submit('Guardar', ['class'=>'btn btn-primary']) !!}
             {!! Form::close() !!}
         </div>
