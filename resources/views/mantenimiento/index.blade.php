@@ -23,16 +23,16 @@
                     </tr>
                 </thead>
                 <body>
-                    @foreach ($Asignatura as $item)
+                    @foreach ($Asignatura as $items)
                         <tr>
-                            <td>{{$item->id_asignatura}}</td>
-                            <td>{{$item->nombre}}</td>
-                            <td>{{$item->codigo}}</td>
-                            <td>{{$item->nombre_cc}}</td>
-                            <td>{{$item->nombre_area}}</td>
-                             <td><a href="{{route('mantenimiento.asignatura.edit',$item->id_asignatura)}}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td>{{$items->id_asignatura}}</td>
+                            <td>{{$items->nombre}}</td>
+                            <td>{{$items->codigo}}</td>
+                            <td>{{$items->nombre_cc}}</td>
+                            <td>{{$items->nombre_area}}</td>
+                             <td><a href="{{[route('mantenimiento.asignatura.edit',$items->id_asignatura])}}" class="btn btn-primary btn-sm">Editar</a></td>
                                 <td>
-                                <form action="{{route('mantenimiento.asignatura.destroy', $item->id_asignatura)}}" method="POST" class="">
+                                <form action="{{[route('mantenimiento.asignatura.destroy',$items->id_asignatura])}}" method="POST" class="">
                                 @method('delete')
                                 @csrf
                                 <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">
