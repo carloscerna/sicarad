@@ -10,6 +10,9 @@ use App\Models\CatalogoServicioEducativo;
 use App\Models\Mantenimiento\Asignatura as Asignaturas;
 use Illuminate\Http\Request;
 
+
+use SweetAlert;
+
 class AsignaturaController extends Controller
 {
     /**
@@ -20,8 +23,8 @@ class AsignaturaController extends Controller
     public function index()
     {
         //lee todos los registros
-        //$Asignatura = Asignatura::all();
-
+        SweetAlert::message('Robots are working!');
+        
         $Asignatura = Asignaturas::join('catalogo_cc_asignatura', 'asignatura.codigo_cc', '=', 'catalogo_cc_asignatura.codigo')
         ->join('catalogo_area_asignatura', 'asignatura.codigo_area', '=', 'catalogo_area_asignatura.codigo')
         ->join('catalogo_servicio_educativo', 'asignatura.codigo_servicio_educativo', '=', 'catalogo_servicio_educativo.codigo')
