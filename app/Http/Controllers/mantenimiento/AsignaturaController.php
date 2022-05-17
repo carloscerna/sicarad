@@ -10,7 +10,6 @@ use App\Models\CatalogoServicioEducativo;
 use App\Models\Mantenimiento\Asignatura as Asignaturas;
 use Illuminate\Http\Request;
 
-
 class AsignaturaController extends Controller
 {
     /**
@@ -30,9 +29,8 @@ class AsignaturaController extends Controller
         'catalogo_servicio_educativo.descripcion as nombre_servicio_educativo')
         ->get();
 
-        //return $Asignatura;
-        return view('mantenimiento.index', compact('Asignatura'));
-        //return view('mantenimiento.index')->with('Asignatura',$Asignatura);
+       // return view('mantenimiento.index', compact('Asignatura'));
+        return view('mantenimiento.index')->with('asignatura',$Asignatura);
     }
 
     /**
@@ -64,7 +62,14 @@ class AsignaturaController extends Controller
             'codigo'=>'required']
         );
         $asignatura = Asignaturas::create($request->all());
-        return redirect()->route('mantenimiento.asignatura.index');
+
+        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
+        $mensaje = 'El Registro se Registro correctamente.';
+
+        return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje'));
+
     }
 
     /**
@@ -85,15 +90,15 @@ class AsignaturaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Asignaturas $asignatura)
+    public function edit(Asignaturas $asignatura, $id_asignatura)
     {
         // para abrir un formulario para edición de un registro
         $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
         $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
         $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
-        
-        return $asignatura;
-        //return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo'));
+
+        $asignatura = Asignaturas::where('id_asignatura', $id_asignatura)->firstOrFail();
+        return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo'));
     }
 
     /**
@@ -103,9 +108,28 @@ class AsignaturaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Asignaturas $asignatura)
+    public function update(Request $request, Asignaturas $asignatura, $id_asignatura)
     {
         // para actualizar lainformación del registro en la base de datos
+        // para guardar en la base de datos el nuevo registro
+        $request->validate(
+            ['nombre'=>'required',
+            'codigo'=>'required']
+        );
+        $asignatura = Asignaturas::where('id_asignatura', $id_asignatura)->firstOrFail();
+        
+        $input = $request->all();
+
+        $asignatura->fill($input)->save();
+
+        // para abrir un formulario para edición de un registro
+        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
+        $mensaje = 'El Registro se actualizó correctamente.';
+
+        return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje'));
+        
     }
 
     /**
@@ -114,9 +138,13 @@ class AsignaturaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Asignaturas $asignatura)
+    public function destroy(Asignaturas $asignatura, $id_asignatura)
     {
         // para eliminar un solo registro
-        return $asignatura;
+        $asignaturas = Asignaturas::where('id_asignatura', $id_asignatura)->firstOrFail();
+        $asignaturas->delete();
+
+        $mensaje = 'El Registro se eliminó correctamente.';
+        return redirect()->route('mantenimiento.asignatura.index')->with('mensaje','El registro se eliminó correctamente.');
     }
 }

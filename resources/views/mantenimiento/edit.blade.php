@@ -3,13 +3,21 @@
 @section('title', 'Sistema - Tablero')
 
 @section('content_header')
-    <h1>EDITAR REGISTRO {{ $asignatura->nombre }}</h1>
+    <h1>EDITAR REGISTRO {{ $asignatura->nombre}}</h1>
 @stop
 
 @section('content')
+@if (isset($mensaje))
+    <div class="alert alert-success">
+        <strong>{{$mensaje}}</strong>
+    </div>
+@endif
 <div class="card">
     <div class="card-body">
-        {!! Form::model($asignatura[('route' => ['mantenimiento.asignatura.update', $asignatura], 'method' => 'PUT', 'files' => true]) !!}
+        {!! Form::model($asignatura, ['route'=>['mantenimiento.asignatura.update', $asignatura->id_asignatura],'method'=>'put'])!!}
+            <div class="form-group">
+                {!! Form::hidden('id_asignatura', null, ['class'=>'form-control']) !!}
+            </div>
             <div class="form-group">
                 {!! Form::label('nombre', 'Nombre') !!}
                 {!! Form::text('nombre', null, ['class'=>'form-control']) !!}
@@ -45,7 +53,6 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
