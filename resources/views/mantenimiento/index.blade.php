@@ -7,11 +7,16 @@
 @stop
 
 @section('content')
-@if (session('mensaje'))
-    <div class="alert alert-danger">
-        <strong>{{session('mensaje')}}</strong>
-    </div>
+@if (session('mensaje') == 'ok')
+    <script>
+        Swal.fire{
+            'Eliminado!',
+            'El Registro ha sido eliminado.',
+            'success'
+        }
+    </script>
 @endif
+
 <div class="card-header">
     <a href="{{route('mantenimiento.asignatura.create')}}" class="btn btn-primary">Nuevo</a>
 </div>
@@ -39,7 +44,7 @@
                         <td>{{$items->nombre_area}}</td>
                         <td><a href="{{route('mantenimiento.asignatura.edit',[$items->id_asignatura])}}" class="btn btn-primary btn-sm">Editar</a></td>
                         <td>
-                            <form action="{{route('mantenimiento.asignatura.destroy',[$items->id_asignatura])}}" method="post">
+                            <form action="{{route('mantenimiento.asignatura.destroy',[$items->id_asignatura])}}" method="post" class="formulario-eliminar">
                                 @method('delete')
                                 @csrf
                                     <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">
@@ -63,6 +68,8 @@
 @stop
 
 @section('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script> console.log('Hi!'); </script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
@@ -78,6 +85,35 @@
                 "paging":         true
             });
         });
+    </script>
+
+    <script>
+        $(".formulario-eliminar").submit(function(e){
+            e.preventDefault();
+        
+            Swal.fire({
+                title: '¿Estas Seguro?',
+                text: "!Este Registro se Eliminará!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '!Si, eliminar!',
+                cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    /*Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                    )*/
+                    // ENVIAR FORMULARIO
+                    this.submit();
+                }
+                })
+        });
+
+        
     </script>
 @endsection
 

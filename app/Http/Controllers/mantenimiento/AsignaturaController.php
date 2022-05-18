@@ -10,9 +10,6 @@ use App\Models\CatalogoServicioEducativo;
 use App\Models\Mantenimiento\Asignatura as Asignaturas;
 use Illuminate\Http\Request;
 
-
-use SweetAlert;
-
 class AsignaturaController extends Controller
 {
     /**
@@ -23,7 +20,6 @@ class AsignaturaController extends Controller
     public function index()
     {
         //lee todos los registros
-        SweetAlert::message('Robots are working!');
         
         $Asignatura = Asignaturas::join('catalogo_cc_asignatura', 'asignatura.codigo_cc', '=', 'catalogo_cc_asignatura.codigo')
         ->join('catalogo_area_asignatura', 'asignatura.codigo_area', '=', 'catalogo_area_asignatura.codigo')
@@ -71,6 +67,7 @@ class AsignaturaController extends Controller
         $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
         $mensaje = 'El Registro se Registro correctamente.';
 
+        $asignatura = Asignaturas::latest('id')->first();
         return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje'));
 
     }
@@ -148,6 +145,6 @@ class AsignaturaController extends Controller
         $asignaturas->delete();
 
         $mensaje = 'El Registro se eliminó correctamente.';
-        return redirect()->route('mantenimiento.asignatura.index')->with('mensaje','El registro se eliminó correctamente.');
+        return redirect()->route('mantenimiento.asignatura.index')->with('mensaje','ok');
     }
 }
