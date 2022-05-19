@@ -30,5 +30,5 @@ use Illuminate\Support\Facades\Route;
 
     // Mantenimientos
         // ASIGANTURA
-         Route::resource('/Mantenimiento/Asignatura', AsignaturaController::class)->names('mantenimiento.asignatura');
+         Route::resource('Mantenimiento/Asignatura', AsignaturaController::class)->names('mantenimiento.asignatura');
  }); 

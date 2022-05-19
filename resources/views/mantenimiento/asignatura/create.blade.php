@@ -36,6 +36,9 @@
 
                     {{ Form::label('LblCodigoServicioEducativo', 'Servicio Educativo') }}
                     {!! Form::select('codigo_servicio_educativo', $catalogo_servicio_educativo, null, ['class' => 'form-control']) !!}
+
+                    {{ Form::label('LblCodigoEstatus', 'Estado') }}
+                    {!! Form::select('codigo_estatus', $catalogo_estatus, null, ['class' => 'form-control']) !!}
                 </div>
 
                 {!! Form::submit('Guardar', ['class'=>'btn btn-primary']) !!}

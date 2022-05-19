@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-@if (session('mensaje') == 'ok')
+@if (session('mensaje'))
     <script>
         Swal.fire{
             'Eliminado!',
@@ -30,6 +30,7 @@
                         <th>Código</th>
                         <th>Código CC</th>
                         <th>Código Área</th>
+                        <th>Estatus</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -42,6 +43,10 @@
                         <td>{{$items->codigo}}</td>
                         <td>{{$items->nombre_cc}}</td>
                         <td>{{$items->nombre_area}}</td>
+                        <td>{{
+                                @$items->nombre_estatus
+                                
+                                }}</td>
                         <td><a href="{{route('mantenimiento.asignatura.edit',[$items->id_asignatura])}}" class="btn btn-primary btn-sm">Editar</a></td>
                         <td>
                             <form action="{{route('mantenimiento.asignatura.destroy',[$items->id_asignatura])}}" method="post" class="formulario-eliminar">

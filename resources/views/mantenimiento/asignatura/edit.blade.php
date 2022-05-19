@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('nombre', 'Nombre') !!}
-                {!! Form::text('nombre', null, ['class'=>'form-control']) !!}
+                {!! Form::text('nombre', null,  ['class'=>'form-control']) !!}
 
                 @error('nombre')
                     <span class="text-danger">{{$message}}</span>
@@ -44,6 +44,9 @@
 
                 {{ Form::label('LblCodigoServicioEducativo', 'Servicio Educativo') }}
                 {!! Form::select('codigo_servicio_educativo', $catalogo_servicio_educativo, null, ['class' => 'form-control']) !!}
+
+                {{ Form::label('LblCodigoEstatus', 'Estado') }}
+                {!! Form::select('codigo_estatus', $catalogo_estatus, null, ['class' => 'form-control']) !!}
             </div>
 
             {!! Form::submit('Guardar', ['class'=>'btn btn-primary']) !!}

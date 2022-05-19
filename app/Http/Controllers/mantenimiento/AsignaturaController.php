@@ -8,7 +8,10 @@ use App\Models\Catalogo_area_asignatura;
 use App\Models\Catalogo_cc_asignatura;
 use App\Models\CatalogoServicioEducativo;
 use App\Models\Mantenimiento\Asignatura as Asignaturas;
+use App\Models\CatalogoEstatus;
 use Illuminate\Http\Request;
+
+$catalogo_cc_asignatura = array(); $catalogo_area_asignatura = array(); $catalogo_estatus = array(); $catalogo_servicio_educativo = array();
 
 class AsignaturaController extends Controller
 {
@@ -24,12 +27,13 @@ class AsignaturaController extends Controller
         $Asignatura = Asignaturas::join('catalogo_cc_asignatura', 'asignatura.codigo_cc', '=', 'catalogo_cc_asignatura.codigo')
         ->join('catalogo_area_asignatura', 'asignatura.codigo_area', '=', 'catalogo_area_asignatura.codigo')
         ->join('catalogo_servicio_educativo', 'asignatura.codigo_servicio_educativo', '=', 'catalogo_servicio_educativo.codigo')
-        ->select('asignatura.id_asignatura','asignatura.nombre', 'asignatura.codigo', 'catalogo_cc_asignatura.descripcion as nombre_cc', 'catalogo_area_asignatura.descripcion as nombre_area',
-        'catalogo_servicio_educativo.descripcion as nombre_servicio_educativo')
+        ->join('catalogo_estatus','asignatura.codigo_estatus', '=', 'catalogo_estatus.codigo')
+        ->select('asignatura.id_asignatura','asignatura.nombre', 'asignatura.codigo', 'asignatura.estatus', 'catalogo_cc_asignatura.descripcion as nombre_cc', 'catalogo_area_asignatura.descripcion as nombre_area',
+        'catalogo_servicio_educativo.descripcion as nombre_servicio_educativo','catalogo_estatus.descripcion as nombre_estatus')
         ->get();
 
        // return view('mantenimiento.index', compact('Asignatura'));
-        return view('mantenimiento.index')->with('asignatura',$Asignatura);
+        return view('mantenimiento.asignatura.index')->with('asignatura',$Asignatura);
     }
 
     /**
@@ -40,11 +44,11 @@ class AsignaturaController extends Controller
     public function create()
     {
         // Abrir formulario para un nuevo registro
-        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
+        global $catalogo_cc_asignatura, $catalogo_area_asignatura, $catalogo_servicio_educativo, $catalogo_estatus;
 
-        return view('mantenimiento.create', compact('catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo'));
+        $this->estados_asignaturas();
+        
+        return view('mantenimiento.asignatura.create', compact('catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','catalogo_estatus'));
     }
 
     /**
@@ -56,19 +60,20 @@ class AsignaturaController extends Controller
     public function store(Request $request)
     {
         // para guardar en la base de datos el nuevo registro
+        global $catalogo_cc_asignatura, $catalogo_area_asignatura, $catalogo_servicio_educativo, $catalogo_estatus;
+
         $request->validate(
             ['nombre'=>'required',
             'codigo'=>'required']
         );
         $asignatura = Asignaturas::create($request->all());
 
-        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
         $mensaje = 'El Registro se Registro correctamente.';
 
+        $this->estados_asignaturas();
+
         $asignatura = Asignaturas::latest('id')->first();
-        return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje'));
+        return view('mantenimiento.asignatura.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje','catalogo_estatus'));
 
     }
 
@@ -81,7 +86,7 @@ class AsignaturaController extends Controller
     public function show(Asignaturas $asignatura)
     {
         // muestra un registro en específico.
-        return view('mantenimiento.show');
+        return view('mantenimiento.asignatura.show');
     }
 
     /**
@@ -93,12 +98,12 @@ class AsignaturaController extends Controller
     public function edit(Asignaturas $asignatura, $id_asignatura)
     {
         // para abrir un formulario para edición de un registro
-        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
+        global $catalogo_cc_asignatura, $catalogo_area_asignatura, $catalogo_servicio_educativo, $catalogo_estatus;
 
+        $this->estados_asignaturas();
+        
         $asignatura = Asignaturas::where('id_asignatura', $id_asignatura)->firstOrFail();
-        return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo'));
+        return view('mantenimiento.asignatura.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','catalogo_estatus'));
     }
 
     /**
@@ -112,6 +117,8 @@ class AsignaturaController extends Controller
     {
         // para actualizar lainformación del registro en la base de datos
         // para guardar en la base de datos el nuevo registro
+        global $catalogo_cc_asignatura, $catalogo_area_asignatura, $catalogo_servicio_educativo, $catalogo_estatus;
+
         $request->validate(
             ['nombre'=>'required',
             'codigo'=>'required']
@@ -123,12 +130,11 @@ class AsignaturaController extends Controller
         $asignatura->fill($input)->save();
 
         // para abrir un formulario para edición de un registro
-        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
-        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
+        $this->estados_asignaturas();
+
         $mensaje = 'El Registro se actualizó correctamente.';
 
-        return view('mantenimiento.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje'));
+        return view('mantenimiento.asignatura.edit', compact('asignatura','catalogo_cc_asignatura','catalogo_area_asignatura','catalogo_servicio_educativo','mensaje','catalogo_estatus'));
         
     }
 
@@ -144,7 +150,16 @@ class AsignaturaController extends Controller
         $asignaturas = Asignaturas::where('id_asignatura', $id_asignatura)->firstOrFail();
         $asignaturas->delete();
 
-        $mensaje = 'El Registro se eliminó correctamente.';
         return redirect()->route('mantenimiento.asignatura.index')->with('mensaje','ok');
+    }
+
+    public function estados_asignaturas(){
+        global $catalogo_cc_asignatura, $catalogo_area_asignatura, $catalogo_servicio_educativo, $catalogo_estatus;
+
+
+        $catalogo_cc_asignatura = Catalogo_cc_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_area_asignatura = Catalogo_area_asignatura::pluck('descripcion','codigo')->toarray();
+        $catalogo_servicio_educativo = CatalogoServicioEducativo::pluck('descripcion','codigo')->toarray();
+        $catalogo_estatus = CatalogoEstatus::pluck('descripcion','codigo')->toarray();
     }
 }
