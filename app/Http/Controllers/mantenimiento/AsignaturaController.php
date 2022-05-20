@@ -29,7 +29,7 @@ class AsignaturaController extends Controller
         ->join('catalogo_servicio_educativo', 'asignatura.codigo_servicio_educativo', '=', 'catalogo_servicio_educativo.codigo')
         ->join('catalogo_estatus','asignatura.codigo_estatus', '=', 'catalogo_estatus.codigo')
         ->select('asignatura.id_asignatura','asignatura.nombre', 'asignatura.codigo', 'asignatura.estatus', 'catalogo_cc_asignatura.descripcion as nombre_cc', 'catalogo_area_asignatura.descripcion as nombre_area',
-        'catalogo_servicio_educativo.descripcion as nombre_servicio_educativo','catalogo_estatus.descripcion as nombre_estatus')
+        'catalogo_servicio_educativo.descripcion as nombre_servicio_educativo','catalogo_estatus.descripcion as nombre_estatus','codigo_estatus')
         ->get();
 
        // return view('mantenimiento.index', compact('Asignatura'));

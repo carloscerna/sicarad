@@ -43,11 +43,13 @@
                         <td>{{$items->codigo}}</td>
                         <td>{{$items->nombre_cc}}</td>
                         <td>{{$items->nombre_area}}</td>
-                        <td>{{
-                                @$items->nombre_estatus
-                                
-                                }}</td>
-                        <td><a href="{{route('mantenimiento.asignatura.edit',[$items->id_asignatura])}}" class="btn btn-primary btn-sm">Editar</a></td>
+                        @if ($items->codigo_estatus == '01')
+                            <td>{!! Form::label('LblEstatus', $items->nombre_estatus, ['class'=>'form-control bg-success text-sm']) !!}</td>                            
+                        @else
+                        <td>{!! Form::label('LblEstatus', $items->nombre_estatus, ['class'=>'form-control bg-warning text-sm']) !!}</td>                            
+                        @endif
+
+                        <td><a href="{{route('mantenimiento.asignatura.edit',[$items->id_asignatura])}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Editar</a></td>
                         <td>
                             <form action="{{route('mantenimiento.asignatura.destroy',[$items->id_asignatura])}}" method="post" class="formulario-eliminar">
                                 @method('delete')
